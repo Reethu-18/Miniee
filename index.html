@@ -4,21 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happiee Birthday Miniiiiiee!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Indie+Flower&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
     
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Indie+Flower&family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
         /* --- CSS STYLES --- */
         :root {
-            --bg-color: #f4f1ea;
-            --accent-pink: #eebdc5;
-            --accent-dark: #5a5a5a;
+            --bg-color: #fcf8f3;
+            --accent-pink: #ffcbd3;
+            --accent-dark: #6b4c4c;
             --polaroid-white: #ffffff;
+            --tape-color: rgba(255, 255, 255, 0.6);
         }
 
         body {
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(#e6c8c8 1px, transparent 1px), 
+                radial-gradient(#e6c8c8 1px, transparent 1px);
+            background-position: 0 0, 25px 25px;
+            background-size: 50px 50px; /* Polka dot paper effect */
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
             color: var(--accent-dark);
@@ -30,11 +39,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle, #ffe6e9 0%, #f4f1ea 100%);
+            background: linear-gradient(135deg, #ffe6e9 0%, #fff0f3 100%);
             position: fixed;
             width: 100%;
             z-index: 100;
-            transition: transform 1s ease-in-out;
+            transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
         .envelope-container {
@@ -44,16 +53,16 @@
         }
 
         .envelope-container:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(2deg);
         }
 
         .envelope {
-            width: 300px;
-            height: 200px;
-            background-color: #d4a5a5;
+            width: 320px;
+            height: 220px;
+            background-color: #e09f9f;
             position: relative;
             border-radius: 0 0 10px 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
         }
 
         .envelope::before {
@@ -61,9 +70,9 @@
             position: absolute;
             top: 0;
             left: 0;
-            border-left: 150px solid #e0b0b0;
-            border-top: 100px solid transparent;
-            border-bottom: 100px solid #e0b0b0;
+            border-left: 160px solid #edaeb1;
+            border-top: 110px solid transparent;
+            border-bottom: 110px solid #edaeb1;
             border-radius: 0 0 0 10px;
             height: 0;
         }
@@ -73,9 +82,9 @@
             position: absolute;
             top: 0;
             right: 0;
-            border-right: 150px solid #cf9e9e;
-            border-top: 100px solid transparent;
-            border-bottom: 100px solid #cf9e9e;
+            border-right: 160px solid #e2989c;
+            border-top: 110px solid transparent;
+            border-bottom: 110px solid #e2989c;
             border-radius: 0 0 10px 0;
             height: 0;
         }
@@ -84,47 +93,69 @@
             position: absolute;
             top: 0;
             left: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 110px solid #bf8f8f;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 120px solid #d1888b;
             transform-origin: top;
-            transition: 0.5s;
+            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 5;
         }
 
         .letter {
             position: absolute;
-            background: white;
-            width: 260px;
+            background: #fff;
+            width: 280px;
             height: 180px;
             top: 10px;
             left: 20px;
-            transition: 0.5s;
+            transition: 0.6s;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .stamp {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 50px;
+            background: #ffcccc;
+            border: 2px dashed #ff9999;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 20px;
+            color: #d1888b;
+        }
+
+        .letter h3 {
             font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            color: #d4a5a5;
-            border-radius: 5px;
+            font-size: 2.2rem;
+            color: #d1888b;
+            margin: 0;
         }
 
         .click-instruction {
-            margin-top: 20px;
+            margin-top: 30px;
             font-family: 'Indie Flower', cursive;
             font-size: 1.2rem;
+            color: #d1888b;
             animation: bounce 2s infinite;
         }
 
-        /* Animation Classes */
+        /* --- Animation Classes --- */
         .envelope-open .flap {
             transform: rotateX(180deg);
             z-index: 0;
         }
 
         .envelope-open .letter {
-            transform: translateY(-100px);
+            transform: translateY(-120px) rotate(-2deg);
             z-index: 6;
         }
 
@@ -134,121 +165,177 @@
 
         /* --- Main Scrapbook Area --- */
         .scrapbook {
-            padding: 40px 20px;
-            max-width: 1000px;
+            padding: 60px 20px;
+            max-width: 1100px;
             margin: 0 auto;
             text-align: center;
-            background-image: linear-gradient(#e6e6e6 1px, transparent 1px), linear-gradient(90deg, #e6e6e6 1px, transparent 1px);
-            background-size: 40px 40px; 
+            position: relative;
         }
 
         header h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
-            color: #d88d98;
+            font-size: 4rem;
+            color: #d1888b;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
         }
 
         .subtitle {
             font-family: 'Indie Flower', cursive;
             font-size: 1.5rem;
             color: #888;
+            margin-bottom: 50px;
         }
 
+        /* --- Gallery Grid --- */
         .gallery {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 40px;
+            gap: 60px;
             margin-top: 50px;
+            position: relative;
         }
 
+        /* --- Polaroid Styling --- */
         .polaroid {
             background: var(--polaroid-white);
-            padding: 15px 15px 40px 15px;
-            box-shadow: 5px 10px 15px rgba(0,0,0,0.15);
-            width: 250px;
-            transition: transform 0.3s;
+            padding: 15px 15px 50px 15px;
+            box-shadow: 5px 10px 20px rgba(0,0,0,0.1);
+            width: 260px;
+            transition: all 0.4s ease;
             position: relative;
+            opacity: 0; /* Hidden initially for scroll reveal */
+            transform: translateY(50px);
+        }
+
+        /* Reveal Animation Class */
+        .polaroid.visible {
+            opacity: 1;
+            transform: translateY(0) rotate(var(--rotation));
         }
 
         .polaroid img {
             width: 100%;
-            height: 300px; 
+            height: 320px;
             object-fit: cover;
-            border: 1px solid #eee;
+            border: 1px solid #f0f0f0;
+            filter: sepia(10%) contrast(105%); /* Aesthetic Filter */
         }
 
         .caption {
             font-family: 'Indie Flower', cursive;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-top: 15px;
-            color: #444;
+            color: #555;
+            font-weight: 600;
         }
 
+        /* 3D Hover Effect */
         .polaroid:hover {
             transform: scale(1.1) rotate(0deg) !important;
-            z-index: 10;
-            box-shadow: 10px 20px 30px rgba(0,0,0,0.2);
+            z-index: 20;
+            box-shadow: 15px 25px 40px rgba(0,0,0,0.2);
+            cursor: pointer;
         }
 
-        .rotate-left { transform: rotate(-5deg); }
-        .rotate-right { transform: rotate(5deg); }
-        .straight { transform: rotate(0deg); }
-
+        /* Tape effect */
         .polaroid::before {
             content: '';
             position: absolute;
             top: -15px;
             left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 30px;
-            background-color: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transform: translateX(-50%) rotate(-2deg);
+            width: 110px;
+            height: 35px;
+            background-color: var(--tape-color);
+            border-left: 2px dashed rgba(0,0,0,0.05);
+            border-right: 2px dashed rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 2;
         }
 
-        /* Letter Section */
+        /* --- Stickers & Decorations --- */
+        .sticker {
+            position: absolute;
+            font-size: 40px;
+            z-index: 15;
+            animation: float 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        /* --- Letter Section --- */
         .letter-section {
-            margin-top: 80px;
+            margin-top: 100px;
             background: #fff;
-            padding: 40px;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            max-width: 600px;
+            padding: 60px 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            max-width: 650px;
             margin-left: auto;
             margin-right: auto;
             position: relative;
-            border: 2px dashed #d88d98;
+            transform: rotate(-1deg);
+        }
+
+        /* Washi Tape corners for letter */
+        .letter-section::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 35px;
+            background: rgba(238, 189, 197, 0.7);
         }
 
         .letter-section h2 {
             font-family: 'Dancing Script', cursive;
-            color: #d88d98;
+            font-size: 2.5rem;
+            color: #d1888b;
+            margin-bottom: 20px;
         }
 
         .letter-section p {
             font-family: 'Indie Flower', cursive;
-            font-size: 1.3rem;
-            line-height: 1.6;
-            color: #333;
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #444;
         }
 
         .signature {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
+            font-size: 2rem;
             text-align: right;
-            margin-top: 20px;
+            margin-top: 30px;
+            color: #d1888b;
         }
 
-        .heart {
-            position: fixed;
-            color: #eebdc5;
-            font-size: 20px;
-            animation: floatUp 5s linear infinite;
-            z-index: 0;
-            opacity: 0.7;
+        /* Interactive Button */
+        .btn-love {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: #d1888b;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(209, 136, 139, 0.4);
+        }
+
+        .btn-love:hover {
+            background: #b56c6f;
+            transform: scale(1.1);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         @keyframes bounce {
@@ -256,15 +343,12 @@
             50% { transform: translateY(-10px); }
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-        }
-
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .polaroid { width: 90%; }
-            header h1 { font-size: 2.5rem; }
+            .polaroid { width: 90%; margin-bottom: 30px; }
+            header h1 { font-size: 2.8rem; }
+            .gallery { gap: 30px; }
+            .sticker { font-size: 30px; }
         }
     </style>
 </head>
@@ -276,7 +360,8 @@
                 <div class="flap"></div>
                 <div class="body"></div>
                 <div class="letter">
-                    <p>For Miniiiiiee</p>
+                    <div class="stamp">❤️</div>
+                    <h3>For Miniiiiiee</h3>
                 </div>
             </div>
             <p class="click-instruction">Tap to Open 💌</p>
@@ -287,58 +372,63 @@
         
         <header>
             <h1>Happiee Birthday Miniiiiiee ✨</h1>
-            <p class="subtitle">A little trip down memory lane for my favorite human.</p>
+            <p class="subtitle">A scrapbook of us.</p>
         </header>
 
         <div class="gallery">
-            <div class="polaroid rotate-left">
+            
+            <div class="sticker" style="top: -20px; left: 10px;">✨</div>
+            <div class="sticker" style="top: 200px; right: 20px;">🎀</div>
+            <div class="sticker" style="bottom: 100px; left: 50px;">🌸</div>
+
+            <div class="polaroid" style="--rotation: -5deg;">
                 <img src="WhatsApp Image 2025-11-26 at 02.15.16_45727e7d.jpg" alt="Mini Yamini">
                 <div class="caption">Small you, big dreams 🌸</div>
             </div>
             
-            <div class="polaroid rotate-right">
+            <div class="polaroid" style="--rotation: 5deg;">
                 <img src="WhatsApp Image 2025-11-26 at 02.15.15_da6ed6d9.jpg" alt="Childhood">
                 <div class="caption">That attitude tho! 😎</div>
             </div>
 
-            <div class="polaroid rotate-left">
+            <div class="polaroid" style="--rotation: -3deg;">
                 <img src="WhatsApp Image 2025-11-26 at 02.15.15_3a6bc379.jpg" alt="Green Dress">
                 <div class="caption">Gorgeous in Green 🌿</div>
             </div>
 
-            <div class="polaroid rotate-right">
+            <div class="polaroid" style="--rotation: 6deg;">
                 <img src="WhatsApp Image 2025-11-26 at 02.15.17_c96958b9.jpg" alt="Candid">
                 <div class="caption">Main character energy ✨</div>
             </div>
 
-            <div class="polaroid straight">
+            <div class="polaroid" style="--rotation: 0deg; margin-top: 30px;">
                 <img src="IMG-20251102-WA0004.jpg" alt="Side Profile">
-                <div class="caption">Looking at our future like...</div>
+                <div class="caption">Future looking bright ☀️</div>
             </div>
 
-            <div class="polaroid rotate-left">
+            <div class="polaroid" style="--rotation: -6deg;">
                 <img src="Snapchat-35342344(1)(1).jpg" alt="Selfie">
                 <div class="caption">Slay queen 💅</div>
             </div>
 
-            <div class="polaroid rotate-right">
+            <div class="polaroid" style="--rotation: 4deg;">
                 <img src="WhatsApp Image 2025-11-26 at 02.16.24_86834fc8.jpg" alt="Mirror Selfie">
                 <div class="caption">OOTD Check ✅</div>
             </div>
 
-            <div class="polaroid rotate-left">
+            <div class="polaroid" style="--rotation: -4deg;">
                 <img src="WhatsApp Image 2025-11-26 at 02.15.17_e07deeaa.jpg" alt="With Bunny">
-                <div class="caption">Cuteness overload (and the bunny too) 🐰</div>
+                <div class="caption">Cuteness overload 🐰</div>
             </div>
 
-            <div class="polaroid rotate-right">
+            <div class="polaroid" style="--rotation: 3deg;">
                 <img src="WhatsApp Image 2025-11-26 at 02.15.16_596d08e8.jpg" alt="Friends">
                 <div class="caption">Partners in Crime 🤜🤛</div>
             </div>
 
-            <div class="polaroid straight big-polaroid">
+            <div class="polaroid" style="--rotation: 0deg;">
                 <img src="WhatsApp Image 2025-11-26 at 02.15.16_34363c88.jpg" alt="Funny Face">
-                <div class="caption">And the real Miniiiiiee... 😂 Love ya!</div>
+                <div class="caption">The real Miniiiiiee... 😂</div>
             </div>
         </div>
 
@@ -348,11 +438,17 @@
                 Happy Birthday! 🎉<br><br>
                 Thank you for being the most amazing best friend. From your cute childhood pics to your "aesthetic" poses and our crazy selfies, every memory with you is special.
                 <br><br>
-                Here is to another year of laughing until our stomachs hurt, gossiping, and growing up together (but not too fast). Keep shining!
+                Here is to another year of laughing until our stomachs hurt, gossiping, and growing up together (but not too fast).
             </p>
             <br>
-            <p class="signature">- Reethuuu</p>
+            <p class="signature">- Reethuuu ❤️</p>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn-love" onclick="sendLove()">Send Extra Love 💕</button>
+            </div>
         </div>
+        
+        <br><br><br>
 
     </main>
 
@@ -365,40 +461,72 @@
             // 1. Animate Envelope Opening
             envelope.classList.add('envelope-open');
 
-            // 2. Wait for animation, then slide up landing page
+            // 2. Fire Confetti Explosion
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ffcbd3', '#edaeb1', '#ffffff']
+            });
+
+            // 3. Slide up landing page
             setTimeout(() => {
                 landingPage.classList.add('slide-up');
                 
-                // 3. Reveal the scrapbook
+                // 4. Reveal the scrapbook
                 setTimeout(() => {
                     landingPage.style.display = 'none';
                     scrapbook.style.display = 'block';
-                    createHearts(); // Start heart animation
+                    
+                    // Trigger scroll observer
+                    startScrollObserver();
                 }, 800);
             }, 1000);
         }
 
-        // Function to create floating hearts background
-        function createHearts() {
-            const heartContainer = document.body;
-            
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.innerHTML = '❤';
-                
-                // Randomize position and size
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-                heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-                
-                heartContainer.appendChild(heart);
+        // Scroll Animation Observer
+        function startScrollObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
 
-                // Remove heart after animation
-                setTimeout(() => {
-                    heart.remove();
-                }, 5000);
-            }, 300);
+            document.querySelectorAll('.polaroid').forEach(p => observer.observe(p));
+        }
+
+        // Send Love Button Logic
+        function sendLove() {
+            // Heart shaped confetti
+            var defaults = {
+                spread: 360,
+                ticks: 100,
+                gravity: 0,
+                decay: 0.94,
+                startVelocity: 30,
+                shapes: ['heart'],
+                colors: ['FFC0CB', 'FF69B4', 'FF1493', 'C71585']
+            };
+
+            confetti({
+                ...defaults,
+                particleCount: 50,
+                scalar: 2
+            });
+
+            confetti({
+                ...defaults,
+                particleCount: 25,
+                scalar: 3
+            });
+            
+            confetti({
+                ...defaults,
+                particleCount: 10,
+                scalar: 4
+            });
         }
     </script>
 </body>
